@@ -2,6 +2,7 @@
 DogStatsd is a Python client for DogStatsd, a Statsd fork for Datadog.
 """
 
+import functools
 import logging
 from random import random
 from socket import socket, AF_INET, SOCK_DGRAM
@@ -92,14 +93,12 @@ class DogStatsd(object):
                 statsd.timing('user.query.time', time.time() - start)
         """
         def wrapper(func):
+            @functools.wraps(func)
             def wrapped(*args, **kwargs):
                 start = time()
                 result = func(*args, **kwargs)
                 self.timing(metric, time() - start, tags=tags, sample_rate=sample_rate)
                 return result
-            wrapped.__name__ = func.__name__
-            wrapped.__doc__  = func.__doc__
-            wrapped.__dict__.update(func.__dict__)
             return wrapped
         return wrapper
 
