@@ -114,6 +114,7 @@ class DogStatsd(object):
         """
         if value is None:
             return
+
         self._report(metric, 'c', -value, tags, sample_rate)
 
     def histogram(self, metric, value, tags=None, sample_rate=1):
