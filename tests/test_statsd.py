@@ -182,6 +182,26 @@ class TestDogStatsd(object):
     def test_module_level_instance(self):
         t.assert_true(isinstance(statsd.statsd, statsd.DogStatsd))
 
+    def test_it_wont_allow_None_for_gauge(self):
+        self.statsd.gauge('set', None)
+        assert self.recv() is None
+
+    def test_it_wont_allow_None_for_increment(self):
+        self.statsd.increment('set', None)
+        assert self.recv() is None
+
+    def test_it_wont_allow_None_for_decrement(self):
+        self.statsd.decrement('set', None)
+        assert self.recv() is None
+
+    def test_it_wont_allow_None_for_histogram(self):
+        self.statsd.histogram('set', None)
+        assert self.recv() is None
+
+    def test_it_wont_allow_None_for_timing(self):
+        self.statsd.timing('set', None)
+        assert self.recv() is None
+
 
 if __name__ == '__main__':
     statsd = statsd

@@ -112,6 +112,8 @@ class DogStatsd(object):
         >>> statsd.decrement('files.remaining')
         >>> statsd.decrement('active.connections', 2)
         """
+        if value is None:
+            return
         self._report(metric, 'c', -value, tags, sample_rate)
 
     def histogram(self, metric, value, tags=None, sample_rate=1):
@@ -169,6 +171,9 @@ class DogStatsd(object):
         self._report(metric, 's', value, tags, sample_rate)
 
     def _report(self, metric, metric_type, value, tags, sample_rate):
+        if value is None:
+            return
+
         if sample_rate != 1 and random() > sample_rate:
             return
 
